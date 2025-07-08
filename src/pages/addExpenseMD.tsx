@@ -2,8 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Wallet } from "lucide-react";
 import { AddExpenseMDDialog } from "@/components/AddExpenseMDDialog";
+import SessionCard from "@/components/sessionCard";
+import { useGetAllSessions } from "@/hook/useGetAllSessions";
 
 const AddExpenseMD = () => {
+  const sessions = useGetAllSessions();
+  console.log(sessions);
+
   return (
     <Card className="w-full max-w-2xl mx-auto mt-6 md:mt-10 shadow-md rounded-2xl border border-border">
       <CardContent className="px-4 py-6 sm:px-6 text-center">
@@ -17,9 +22,25 @@ const AddExpenseMD = () => {
           </Badge>
         </div>
         <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto mb-6">
-          Was it the fancy water bottles or post-match biryani? Log your expenses and let the scoreboard speak!
+          Was it the fancy water bottles or post-match biryani? Log your
+          expenses and let the scoreboard speak!
         </p>
-        <AddExpenseMDDialog/>
+        {/* <AddExpenseMDDialog/> */}
+
+        <div className="flex flex-col gap-2">
+          {sessions &&
+            sessions.map((item) => (
+              <div key={item.id}>
+                <SessionCard
+                  id={item.id}
+                  title={item.title}
+                  isActive={!item.settles}
+                  isSettled={item.settles}
+                  playerCount={item.players.length}
+                />
+              </div>
+            ))}
+        </div>
       </CardContent>
     </Card>
   );

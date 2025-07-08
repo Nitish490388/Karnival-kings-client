@@ -1,33 +1,24 @@
-import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Sparkle } from "lucide-react";
 import axiosClient from "@/utils/axiosClient";
 import { useRecoilValue } from "recoil";
 import { availableFundAtom } from "@/state/availableFundAtom";
+import { useGetAvailableFund } from "@/hook/useGetAvailable";
+import { Button } from "@/components/ui/button";
+import CreateSession from "@/components/CreateSession";
 
 export default function CashFlowPage() {
   // const [funds, setFunds] = useState<{
   //   MATCHDAY: number;
   //   EQUIPMENT: number;
   // } | null>(null);
+  useGetAvailableFund();
   const availableFund = useRecoilValue(availableFundAtom);
-
-  console.log(availableFund);
-
-  // useEffect(() => {
-  //   const getdata = async () => {
-  //     const response = await axiosClient.get("/api/v1/app/availableFund");
-  //     const {equipmentBalance, matchdayBalance} = response.data.result;
-  //     // console.log(equipmentBalance, matchdayBalance);
-  //     setFunds({
-  //       MATCHDAY: matchdayBalance,
-  //       EQUIPMENT: equipmentBalance,
-  //     });
-  //   }
-  //   getdata();
-  // }, []);
+  
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -53,10 +44,6 @@ export default function CashFlowPage() {
     },
   ];
 
-  console.log(availableFund.equipmentBalance);
-  console.log(availableFund.matchdayBalance);
-  
-  
   return (
     <div className="p-6">
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 text-primary">
@@ -78,11 +65,13 @@ export default function CashFlowPage() {
               <CardContent className="p-6 flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold">{fund.label}</h2>
-                 
-                     <p className="text-3xl font-bold mt-2">
-                       ₹{fund.key === "EQUIPMENT" ? availableFund.equipmentBalance : availableFund.matchdayBalance}
-                     </p>
-                 
+
+                  <p className="text-3xl font-bold mt-2">
+                    ₹
+                    {fund.key === "EQUIPMENT"
+                      ? availableFund.equipmentBalance
+                      : availableFund.matchdayBalance}
+                  </p>
                 </div>
                 <Sparkle className="h-10 w-10 opacity-80" />
               </CardContent>
@@ -90,6 +79,7 @@ export default function CashFlowPage() {
           </motion.div>
         ))}
       </div>
+      <CreateSession/>
     </div>
   );
 }

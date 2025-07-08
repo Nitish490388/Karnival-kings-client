@@ -60,6 +60,8 @@ function App() {
                 path="/cashflow/matchday/add-contribution"
                 element={<AddContribution />}
               />
+
+              {/* <Route path="/session/:id" element={<SessionDetails />} /> */}
             </Route>
           </Route>
         </Route>
