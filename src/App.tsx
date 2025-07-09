@@ -16,6 +16,7 @@ import Chashflow from "./pages/cashflow";
 import AddContribution from "./pages/addContribution";
 import WsPage from "./pages/WsPage";
 import { useCashSocketListener } from "./hook/useCashSocketListener.ts"; 
+import SessionDetails from "./pages/SessionDetails.tsx";
 
 
 function App() {
@@ -61,7 +62,7 @@ function App() {
                 element={<AddContribution />}
               />
 
-              {/* <Route path="/session/:id" element={<SessionDetails />} /> */}
+              <Route path="/session/:id" element={<SessionDetails />} />
             </Route>
           </Route>
         </Route>
