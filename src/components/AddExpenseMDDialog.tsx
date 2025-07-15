@@ -15,8 +15,9 @@ import { useState } from "react";
 import { expenseInputTypes } from "@/types/types";
 import axiosClient from "@/utils/axiosClient";
 import { ErrorMessage } from "./errorMsg";
+import { Plus } from "lucide-react";
 
-export function AddExpenseMDDialog() {
+export function AddExpenseMDDialog({disabled, sessionId}: {disabled: boolean, sessionId: string}) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [errorMSG, setErrorMSG] = useState<string | null>(null);
@@ -26,7 +27,8 @@ export function AddExpenseMDDialog() {
     const expenseData = {
       description,
       amount: parseInt(amount),
-      expenseType
+      expenseType,
+      sessionId
     };
     const { success,data, error } = expenseInputTypes.safeParse(expenseData);
     if (!success) {
@@ -51,7 +53,9 @@ export function AddExpenseMDDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add Expense</Button>
+        <Button  className="flex items-center gap-1" disabled={disabled}>
+                  <Plus className="w-4 h-4" /> Add Expense
+                </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

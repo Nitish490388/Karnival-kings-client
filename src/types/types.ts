@@ -21,7 +21,9 @@ const SignupInputTypes = z.object({
     .positive({ message: 'Amount must be positive' }),
 
     expenseType: z
-    .enum(["MATCHDAY","EQUIPMENT"])
+    .enum(["MATCHDAY","EQUIPMENT"]),
+
+    sessionId: z.string()
 })
 
 export {

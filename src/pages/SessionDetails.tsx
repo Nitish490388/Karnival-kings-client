@@ -28,7 +28,6 @@ export type Contribution = {
   sessionId: string;
 };
 
-
 export type ExpenseSession = {
   id: string;
   title: string;
@@ -38,7 +37,6 @@ export type ExpenseSession = {
   expenses: Expense[];
   contributions: Contribution[];
 };
-
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -53,7 +51,9 @@ const SessionDetails = () => {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        const response = await axiosClient.get(`/api/v1/matchday/getSessionDataById/${id}`);
+        const response = await axiosClient.get(
+          `/api/v1/matchday/getSessionDataById/${id}`
+        );
         setSession(response.data.result.sessionData);
       } catch (error) {
         console.error("Failed to load session", error);
@@ -65,17 +65,25 @@ const SessionDetails = () => {
   if (!session) return <div className="p-4 text-center">Loading...</div>;
 
   const totalSpent = session.expenses.reduce((sum, e) => sum + e.amount, 0);
-  const perPerson = session.players.length ? totalSpent / session.players.length : 0;
+  const perPerson = session.players.length
+    ? totalSpent / session.players.length
+    : 0;
 
   return (
     <div className="p-4 space-y-4 max-w-3xl mx-auto">
       {/* Header */}
-      <Card className="p-4">
-        <h1 className="text-2xl font-bold">{session.title}</h1>
-        <div className="text-sm text-muted-foreground mt-1 flex flex-wrap items-center gap-2">
+      <Card className="p-4 space-y-2">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <h1 className="text-2xl font-bold">{session.title}</h1>
+          <div className="text-lg font-semibold text-green-600">
+            Total: ₹{totalSpent}
+          </div>
+        </div>
+        <div className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
           <span>{session.type}</span>
           <span>· {session.players.length} players</span>
-          <span>· 
+          <span>
+            ·
             <Badge variant={session.settles ? "default" : "secondary"}>
               {session.settles ? "Settled" : "Not Settled"}
             </Badge>
@@ -83,7 +91,7 @@ const SessionDetails = () => {
         </div>
       </Card>
 
-      {/* Players */}
+      {/* Players
       <Card className="p-4">
         <h2 className="text-lg font-semibold mb-2">Players</h2>
         {session.players.length > 0 ? (
@@ -91,6 +99,64 @@ const SessionDetails = () => {
             {session.players.map((p) => (
               <li key={p.id}>{p.name}</li>
             ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-muted-foreground">No players joined.</p>
+        )}
+      </Card> */}
+
+      {/* Players with Split and Status */}
+      <Card className="p-4">
+        <h2 className="text-lg font-semibold mb-2">Players</h2>
+        {session.players.length > 0 ? (
+          <ul className="space-y-2">
+            {session.players.map((p) => {
+              const isPaid = false;
+
+              // p.splitPaid; // You need to return this from backend
+              return (
+                <li
+                  key={p.id}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-2"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                    <span className="font-medium">{p.name}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Split: ₹{perPerson.toFixed(2)}
+                    </span>
+                    <Badge variant={isPaid ? "default" : "secondary"}>
+                      {isPaid ? "Paid" : "Pending"}
+                    </Badge>
+                  </div>
+                  {!isPaid && (
+                    <button
+                      className="mt-2 sm:mt-0 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
+                      onClick={async () => {
+                        try {
+                          await axiosClient.post(
+                            `/api/v1/matchday/markSplitPaid`,
+                            {
+                              sessionId: session.id,
+                              playerId: p.id,
+                            }
+                          );
+                          setSession({
+                            ...session,
+                            players: session.players.map((pl) =>
+                              pl.id === p.id ? { ...pl, splitPaid: true } : pl
+                            ),
+                          });
+                        } catch (err) {
+                          console.error("Failed to update payment status", err);
+                        }
+                      }}
+                    >
+                      Mark as Paid
+                    </button>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <p className="text-sm text-muted-foreground">No players joined.</p>
@@ -122,9 +188,13 @@ const SessionDetails = () => {
         {session.contributions.length > 0 ? (
           <ul className="divide-y">
             {session.contributions.map((c: Contribution) => (
-              <li key={c.id} className="py-2 flex flex-col sm:flex-row sm:justify-between">
+              <li
+                key={c.id}
+                className="py-2 flex flex-col sm:flex-row sm:justify-between"
+              >
                 <div>
-                  <span className="font-medium">{c.player.name}</span> contributed for <strong>{c.type}</strong>
+                  <span className="font-medium">{c.player.name}</span>{" "}
+                  contributed for <strong>{c.type}</strong>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-semibold">₹{c.amount}</span>
@@ -144,7 +214,9 @@ const SessionDetails = () => {
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted-foreground">No contributions recorded.</p>
+          <p className="text-sm text-muted-foreground">
+            No contributions recorded.
+          </p>
         )}
       </Card>
 

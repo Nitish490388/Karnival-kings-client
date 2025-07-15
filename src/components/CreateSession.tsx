@@ -64,7 +64,8 @@ export default function CreateSession() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="mt-12 flex items-center" variant="secondary">Create A MatchDay Expense Session</Button>
+        {/* <Button className="mt-12 flex items-center" variant="secondary">Create A MatchDay Expense Session</Button> */}
+        <Button>Create a Match Day Session</Button>
       </DialogTrigger>
 
       <DialogContent>

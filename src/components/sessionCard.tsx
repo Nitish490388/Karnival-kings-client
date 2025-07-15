@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { AddExpenseMDDialog } from "./AddExpenseMDDialog";
 
 type SessionCardProps = {
   id: string
@@ -19,7 +20,7 @@ const SessionCard: React.FC<SessionCardProps> = ({
   isActive,
   isSettled,
   playerCount,
-  
+
 }) => {
 
     const navigate = useNavigate();
@@ -48,9 +49,8 @@ const SessionCard: React.FC<SessionCardProps> = ({
         >
           <Eye className="w-4 h-4" /> View Data
         </Button>
-        <Button  className="flex items-center gap-1" disabled={!isActive}>
-          <Plus className="w-4 h-4" /> Add Expense
-        </Button>
+        
+        <AddExpenseMDDialog disabled={!isActive} sessionId={id} />
       </div>
     </Card>
   );

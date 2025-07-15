@@ -4,13 +4,9 @@ import {
 } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Sparkle } from "lucide-react";
-import axiosClient from "@/utils/axiosClient";
 import { useRecoilValue } from "recoil";
 import { availableFundAtom } from "@/state/availableFundAtom";
 import { useGetAvailableFund } from "@/hook/useGetAvailable";
-import { Button } from "@/components/ui/button";
-import CreateSession from "@/components/CreateSession";
-
 export default function CashFlowPage() {
   // const [funds, setFunds] = useState<{
   //   MATCHDAY: number;
@@ -79,7 +75,6 @@ export default function CashFlowPage() {
           </motion.div>
         ))}
       </div>
-      <CreateSession/>
     </div>
   );
 }
