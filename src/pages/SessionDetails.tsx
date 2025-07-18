@@ -48,6 +48,10 @@ const SessionDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [session, setSession] = useState<ExpenseSession | null>(null);
 
+  if (session) {
+    console.log(session);
+  }
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -110,7 +114,7 @@ const SessionDetails = () => {
         <h2 className="text-lg font-semibold mb-2">Players</h2>
         {session.players.length > 0 ? (
           <ul className="space-y-2">
-            {session.players.map((p) => {
+            {/* {session.players.map((p) => {
               const isPaid = false;
 
               // p.splitPaid; // You need to return this from backend
@@ -133,19 +137,67 @@ const SessionDetails = () => {
                       className="mt-2 sm:mt-0 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
                       onClick={async () => {
                         try {
+                          // await axiosClient.post(
+                          //   `/api/v1/matchday/markSplitPaid`,
+                          //   {
+                          //     sessionId: session.id,
+                          //     playerId: p.id,
+                          //   }
+                          // );
+                        } catch (err) {
+                          console.error("Failed to update payment status", err);
+                        }
+                      }}
+                    >
+                      Mark as Paid
+                    </button>
+                  )}
+                </li>
+              );
+            })} */}
+
+            {session.players.map((p) => {
+              const isPaid = session.contributions.some(
+                (c) => c.playerId === p.id && c.status === "PAID"
+              );
+
+              return (
+                <li
+                  key={p.id}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-2"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                    <span className="font-medium">{p.name}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Split: ₹{perPerson.toFixed(2)}
+                    </span>
+                    <Badge variant={isPaid ? "default" : "secondary"}>
+                      {isPaid ? "Paid" : "Pending"}
+                    </Badge>
+                  </div>
+
+
+{/* TODO:    get contributions data from backend and update the ui */}
+                  {!isPaid && (
+                    <button
+                      className="mt-2 sm:mt-0 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
+                      onClick={async () => {
+                        try {
+                          // TODO: Update the status as paid by the hitting the endpoint and 
+                          // by sending the contributionId, playerId in request body..
                           await axiosClient.post(
-                            `/api/v1/matchday/markSplitPaid`,
+                            `/api/v1/app/mark-paid`,
                             {
                               sessionId: session.id,
                               playerId: p.id,
                             }
                           );
-                          setSession({
-                            ...session,
-                            players: session.players.map((pl) =>
-                              pl.id === p.id ? { ...pl, splitPaid: true } : pl
-                            ),
-                          });
+
+                          // Optional: Refresh session data after marking paid
+                          const response = await axiosClient.get(
+                            `/api/v1/matchday/getSessionDataById/${session.id}`
+                          );
+                          setSession(response.data.result.sessionData);
                         } catch (err) {
                           console.error("Failed to update payment status", err);
                         }
@@ -183,7 +235,7 @@ const SessionDetails = () => {
       </Card>
 
       {/* Contributions */}
-      <Card className="p-4">
+      {/* <Card className="p-4">
         <h2 className="text-lg font-semibold mb-2">Contributions</h2>
         {session.contributions.length > 0 ? (
           <ul className="divide-y">
@@ -218,14 +270,14 @@ const SessionDetails = () => {
             No contributions recorded.
           </p>
         )}
-      </Card>
+      </Card> */}
 
       {/* Split Calculation */}
-      <Card className="p-4">
+      {/* <Card className="p-4">
         <h2 className="text-lg font-semibold mb-2">Split Calculation</h2>
         <p>Total: ₹{totalSpent}</p>
         <p>Per Person: ₹{perPerson.toFixed(2)}</p>
-      </Card>
+      </Card> */}
     </div>
   );
 };
