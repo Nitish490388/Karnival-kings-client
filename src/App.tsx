@@ -14,10 +14,9 @@ import { ViewdataLayout } from "./components/ViewdataLayout";
 import ViewdataMD from "./pages/viewDataMD";
 import Chashflow from "./pages/cashflow";
 import AddContribution from "./pages/addContribution";
-import WsPage from "./pages/WsPage";
-import { useCashSocketListener } from "./hook/useCashSocketListener.ts"; 
+import { useCashSocketListener } from "./hook/useCashSocketListener.ts";
 import SessionDetails from "./pages/SessionDetails.tsx";
-
+import AdminPanel from "./pages/adminPanel.tsx";
 
 function App() {
   useCashSocketListener();
@@ -30,10 +29,12 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/gallery" element={<Gallery />} />
           {/* <Route path="/ws" element={<WsPage />} /> */}
-          
-          <Route element={<CashflowLayout />}>
-            <Route element={<RestrictUser />}>
-            <Route path="/cashflow" element={<Chashflow />} />
+
+          <Route element={<RestrictUser />}>
+          <Route path="/admin-panel" element={<AdminPanel />} />
+            <Route element={<CashflowLayout />}>
+              
+              <Route path="/cashflow" element={<Chashflow />} />
               <Route
                 path="/cashflow/equip/add-expense"
                 element={<AddExpenseEQ />}

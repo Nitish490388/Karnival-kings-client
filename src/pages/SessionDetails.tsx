@@ -36,6 +36,7 @@ export type ExpenseSession = {
   players: Player[];
   expenses: Expense[];
   contributions: Contribution[];
+  createdAt: Date;
 };
 
 import { useParams } from "react-router-dom";
@@ -43,6 +44,10 @@ import { useEffect, useState } from "react";
 import axiosClient from "@/utils/axiosClient";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import ContributionList from "@/components/ContributionList";
+import ExpenseList from "@/components/ExpenseList";
+import { Button } from "@/components/ui/button";
+import { generatePDFReport } from "@/utils/pdfGeneration";
 
 const SessionDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,9 +74,6 @@ const SessionDetails = () => {
   if (!session) return <div className="p-4 text-center">Loading...</div>;
 
   const totalSpent = session.expenses.reduce((sum, e) => sum + e.amount, 0);
-  const perPerson = session.players.length
-    ? totalSpent / session.players.length
-    : 0;
 
   return (
     <div className="p-4 space-y-4 max-w-3xl mx-auto">
@@ -79,7 +81,7 @@ const SessionDetails = () => {
       <Card className="p-4 space-y-2">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
           <h1 className="text-2xl font-bold">{session.title}</h1>
-          <div className="text-lg font-semibold text-green-600">
+          <div className="text-lg font-semibold text-red-600">
             Total: ₹{totalSpent}
           </div>
         </div>
@@ -95,189 +97,23 @@ const SessionDetails = () => {
         </div>
       </Card>
 
-      {/* Players
-      <Card className="p-4">
-        <h2 className="text-lg font-semibold mb-2">Players</h2>
-        {session.players.length > 0 ? (
-          <ul className="list-disc pl-4 space-y-1">
-            {session.players.map((p) => (
-              <li key={p.id}>{p.name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">No players joined.</p>
-        )}
-      </Card> */}
-
-      {/* Players with Split and Status */}
-      <Card className="p-4">
-        <h2 className="text-lg font-semibold mb-2">Players</h2>
-        {session.players.length > 0 ? (
-          <ul className="space-y-2">
-            {/* {session.players.map((p) => {
-              const isPaid = false;
-
-              // p.splitPaid; // You need to return this from backend
-              return (
-                <li
-                  key={p.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-2"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                    <span className="font-medium">{p.name}</span>
-                    <span className="text-sm text-muted-foreground">
-                      Split: ₹{perPerson.toFixed(2)}
-                    </span>
-                    <Badge variant={isPaid ? "default" : "secondary"}>
-                      {isPaid ? "Paid" : "Pending"}
-                    </Badge>
-                  </div>
-                  {!isPaid && (
-                    <button
-                      className="mt-2 sm:mt-0 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
-                      onClick={async () => {
-                        try {
-                          // await axiosClient.post(
-                          //   `/api/v1/matchday/markSplitPaid`,
-                          //   {
-                          //     sessionId: session.id,
-                          //     playerId: p.id,
-                          //   }
-                          // );
-                        } catch (err) {
-                          console.error("Failed to update payment status", err);
-                        }
-                      }}
-                    >
-                      Mark as Paid
-                    </button>
-                  )}
-                </li>
-              );
-            })} */}
-
-            {session.players.map((p) => {
-              const isPaid = session.contributions.some(
-                (c) => c.playerId === p.id && c.status === "PAID"
-              );
-
-              return (
-                <li
-                  key={p.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-2"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                    <span className="font-medium">{p.name}</span>
-                    <span className="text-sm text-muted-foreground">
-                      Split: ₹{perPerson.toFixed(2)}
-                    </span>
-                    <Badge variant={isPaid ? "default" : "secondary"}>
-                      {isPaid ? "Paid" : "Pending"}
-                    </Badge>
-                  </div>
-
-
-{/* TODO:    get contributions data from backend and update the ui */}
-                  {!isPaid && (
-                    <button
-                      className="mt-2 sm:mt-0 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
-                      onClick={async () => {
-                        try {
-                          // TODO: Update the status as paid by the hitting the endpoint and 
-                          // by sending the contributionId, playerId in request body..
-                          await axiosClient.post(
-                            `/api/v1/app/mark-paid`,
-                            {
-                              sessionId: session.id,
-                              playerId: p.id,
-                            }
-                          );
-
-                          // Optional: Refresh session data after marking paid
-                          const response = await axiosClient.get(
-                            `/api/v1/matchday/getSessionDataById/${session.id}`
-                          );
-                          setSession(response.data.result.sessionData);
-                        } catch (err) {
-                          console.error("Failed to update payment status", err);
-                        }
-                      }}
-                    >
-                      Mark as Paid
-                    </button>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">No players joined.</p>
-        )}
-      </Card>
-
       {/* Expenses */}
-      <Card className="p-4">
-        <h2 className="text-lg font-semibold mb-2">Expenses</h2>
-        {session.expenses.length > 0 ? (
-          <ul className="divide-y">
-            {session.expenses.map((e) => (
-              <li key={e.id} className="py-2 flex justify-between">
-                <span>
-                  {e.description} - <strong>{e.paidBy.name}</strong>
-                </span>
-                <span>₹{e.amount}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">No expenses recorded.</p>
-        )}
-      </Card>
+      <ExpenseList expenses={session.expenses} />
 
       {/* Contributions */}
-      {/* <Card className="p-4">
-        <h2 className="text-lg font-semibold mb-2">Contributions</h2>
-        {session.contributions.length > 0 ? (
-          <ul className="divide-y">
-            {session.contributions.map((c: Contribution) => (
-              <li
-                key={c.id}
-                className="py-2 flex flex-col sm:flex-row sm:justify-between"
-              >
-                <div>
-                  <span className="font-medium">{c.player.name}</span>{" "}
-                  contributed for <strong>{c.type}</strong>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold">₹{c.amount}</span>
-                  <Badge
-                    variant={
-                      c.status === "PAID"
-                        ? "default"
-                        : c.status === "PENDING"
-                        ? "secondary"
-                        : "destructive"
-                    }
-                  >
-                    {c.status}
-                  </Badge>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            No contributions recorded.
-          </p>
-        )}
-      </Card> */}
+      <ContributionList
+        contributions={session.contributions}
+        markAsPaid={async (id, playerId) => {
+          await axiosClient.patch(`/api/v1/app/mark-paid`, {
+            contributionId: id,
+            playerId,
+          });
+        }}
+      />
 
-      {/* Split Calculation */}
-      {/* <Card className="p-4">
-        <h2 className="text-lg font-semibold mb-2">Split Calculation</h2>
-        <p>Total: ₹{totalSpent}</p>
-        <p>Per Person: ₹{perPerson.toFixed(2)}</p>
-      </Card> */}
+      <Button onClick={() => generatePDFReport(session)}>
+        Download Report as PDF
+      </Button>
     </div>
   );
 };

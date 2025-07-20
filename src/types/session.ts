@@ -3,6 +3,8 @@ export type Player = {
   name: string;
   profilePic?: string | null;
   email: string;
+  isApproved: boolean;
+  
 };
 
 export type ExpenseSession = {
