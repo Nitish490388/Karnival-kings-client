@@ -33,23 +33,13 @@ export default function LandingPage() {
           and much more — with transparency and ease.
         </motion.p>
 
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          {/* <Button size="lg">Try Demo</Button> */}
-          <Button size="lg" onClick={() => {
-            navigate("/auth");
-          }}>Login</Button>
-        </motion.div>
+        
 
         <motion.div
           className="mt-16 w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.6 }}
         >
           <Card className="shadow-xl border-2 border-primary/10">
             <CardContent className="p-6">
@@ -82,10 +72,6 @@ export default function LandingPage() {
           </Card>
         </motion.div>
       </main>
-
-      <footer className="mt-24 text-sm text-muted-foreground text-center px-4">
-        &copy; {new Date().getFullYear()} Made with love for Karnival Kings.
-      </footer>
     </div>
   );
 }

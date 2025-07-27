@@ -8,7 +8,6 @@ import CashflowLayout from "./components/cashflowLayout";
 import AddExpenseEQ from "./pages/addExpenseEQ";
 import AddExpenseMD from "./pages/addExpenseMD";
 import ViewdataEQ from "./pages/viewdataEQ";
-import CheckListEQ from "./pages/checkListEQ";
 import RestrictUser from "./components/RestrictUser";
 import { ViewdataLayout } from "./components/ViewdataLayout";
 import ViewdataMD from "./pages/viewDataMD";
@@ -17,6 +16,7 @@ import AddContribution from "./pages/addContribution";
 import { useCashSocketListener } from "./hook/useCashSocketListener.ts";
 import SessionDetails from "./pages/SessionDetails.tsx";
 import AdminPanel from "./pages/adminPanel.tsx";
+import ProfilePage from "./pages/profilePage.tsx";
 
 function App() {
   useCashSocketListener();
@@ -31,10 +31,10 @@ function App() {
           {/* <Route path="/ws" element={<WsPage />} /> */}
 
           <Route element={<RestrictUser />}>
-          <Route path="/admin-panel" element={<AdminPanel />} />
+            <Route path="/admin-panel" element={<AdminPanel />} />
             <Route element={<CashflowLayout />}>
-              
               <Route path="/cashflow" element={<Chashflow />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route
                 path="/cashflow/equip/add-expense"
                 element={<AddExpenseEQ />}
@@ -45,15 +45,10 @@ function App() {
                   element={<ViewdataEQ />}
                 />
                 <Route
-                  path="/cashflow/equip/checklist"
-                  element={<CheckListEQ />}
-                />
-                <Route
                   path="/cashflow/matchday/view-data"
                   element={<ViewdataMD />}
                 />
               </Route>
-              <Route path="/cashflow/eqip/chcklist" element={<CheckListEQ />} />
               <Route
                 path="/cashflow/matchday/add-expense"
                 element={<AddExpenseMD />}

@@ -14,10 +14,3 @@ export const allPlayersSelector = selector({
     }
   },
 });
-
-type playerType = {
-    name: string,
-    email: string,
-    profilepic: string | null
-}
-

@@ -104,7 +104,7 @@ const SessionDetails = () => {
       <ContributionList
         contributions={session.contributions}
         markAsPaid={async (id, playerId) => {
-          await axiosClient.patch(`/api/v1/app/mark-paid`, {
+          await axiosClient.patch(`/api/v1/contributions/mark-paid`, {
             contributionId: id,
             playerId,
           });

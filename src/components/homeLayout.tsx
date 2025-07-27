@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom"
 import Header from "@/components/header";
 import MobileHeader from "@/components/mobile-header";
+import Footer from "./footer";
 
 const HomeLayout = () => {
+
   return (
     <>
     <div className="w-full overflow-x-hidden">
@@ -15,6 +17,7 @@ const HomeLayout = () => {
         <Outlet />
         </div>
         {/* <footer>made with heart</footer> */}
+        <Footer/>
       </div>
     </>
   )
