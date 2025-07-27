@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 
-
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

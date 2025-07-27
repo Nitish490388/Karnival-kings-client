@@ -5,6 +5,7 @@ import { useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { profileSelector } from "@/state/profileAtom";
 import { Player } from "@/types/session";
 import { userAtom } from "@/state/userAtom";
+import NotificationBell from "./notification";
 
 interface itemType {
   name: string;
@@ -50,6 +51,7 @@ const Header: React.FC = () => {
             </span>
           ))}
           <div className="flex gap-4 items-center">
+            <NotificationBell/>
             <ModeToggle />
             {user ? <Userprofile /> : <></>}
           </div>

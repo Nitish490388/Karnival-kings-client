@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { Player } from "@/types/session";
 import { userAtom } from "@/state/userAtom";
-import Checklist from "@/components/checkList";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -51,7 +50,6 @@ export default function ProfilePage() {
 
       
     </div>
-    <Checklist/>
 
     </>
   );

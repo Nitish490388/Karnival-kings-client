@@ -34,8 +34,8 @@ export default function Gallery() {
   }, []);
 
   return (
-    <div className="container py-8">
-      <h1 className="text-2xl font-bold mb-6">🏏 Matchday Gallery</h1>
+    <div className="min-h-screen py-8">
+      <h1 className="text-2xl font-bold mb-6">🏏 Karnival Kings Gallery</h1>
 
       <div className="grid gap-6">
         {posts.map((post) => (
@@ -49,7 +49,7 @@ export default function Gallery() {
 
             <Separator />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-2 sm:px-0">
               {post.media.map((mediaItem) =>
                 mediaItem.type === "VIDEO" ? (
                   <video

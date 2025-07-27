@@ -16,13 +16,13 @@ import {
 } from "@/components/ui/navigation-menu";
 
 const components: { title: string; href: string; description: string }[] = [
+  // {
+  //   title: "Create a match day contribution",
+  //   href: "/cashflow/matchday/add-contribution",
+  //   description: "Create a session for tracking expences and collections. ",
+  // },
   {
-    title: "Create a match day contribution",
-    href: "/cashflow/matchday/add-contribution",
-    description: "Create a session for tracking expences and collections. ",
-  },
-  {
-    title: "Add Expense",
+    title: "Add Expenses",
     href: "/cashflow/matchday/add-expense",
     description: "Add expences if you spent your money on the match day.",
   },
@@ -34,7 +34,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Checklist",
-    href: "/cashflow/matchday/checklist",
+    href: "/checklist",
     description:
       "Check if there is anything you have to pay or you will get refunded.",
   },

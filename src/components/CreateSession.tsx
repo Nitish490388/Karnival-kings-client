@@ -23,6 +23,7 @@ import { useRecoilValueLoadable } from "recoil";
 import { allPlayersSelector } from "@/state/playersAtom";
 import axiosClient from "@/utils/axiosClient";
 import { Input } from "./ui/input";
+import { toast } from "sonner";
 
 
 
@@ -32,13 +33,13 @@ interface playerType {
 }
 
 
-export default function CreateSession() {
+export default function CreateSession({ onCreated }: { onCreated: () => void }) {
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [title, setTitle] = useState<string>("");
-  const playerLoadable = useRecoilValueLoadable(allPlayersSelector);
+  const [open, setOpen] = useState(false); 
 
+  const playerLoadable = useRecoilValueLoadable(allPlayersSelector);
   const playersList: playerType[] = playerLoadable.contents;
-  
 
   const togglePlayer = (id: string) => {
     setSelectedPlayers((prev) =>
@@ -47,14 +48,22 @@ export default function CreateSession() {
   };
 
   const handleCreateSession = async () => {
-    const response = await axiosClient.post("/api/v1/matchday/createMatchdaySession", {selectedPlayers, title});
-    console.log(response);
+    const response = await axiosClient.post("/api/v1/matchday/createMatchdaySession", {
+      selectedPlayers,
+      title,
+    });
+    if (response.status === 200) {
+      toast.success("Session is created successfully!!");
+      
+      onCreated();
+      setOpen(false);
+      setSelectedPlayers([]); 
+      setTitle("");           
+    }
   };
 
   if (playerLoadable.state === "loading") {
-    return (
-      <p className="text-center text-muted-foreground">Loading players...</p>
-    );
+    return <p className="text-center text-muted-foreground">Loading players...</p>;
   }
 
   if (playerLoadable.state === "hasError") {
@@ -62,20 +71,19 @@ export default function CreateSession() {
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {/* <Button className="mt-12 flex items-center" variant="secondary">Create A MatchDay Expense Session</Button> */}
         <Button>Create a Match Day Session</Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          
           <DialogTitle className="mb-3">Select Players for the Session</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 max-h-80 overflow-scroll p-6 ">
+
+        <div className="space-y-4 max-h-80 overflow-scroll p-6">
           {playersList.map((player) => (
-            <div key={player.id} className="flex items-center space-x-2 ">
+            <div key={player.id} className="flex items-center space-x-2">
               <Checkbox
                 id={player.id}
                 checked={selectedPlayers.includes(player.id)}
@@ -85,9 +93,14 @@ export default function CreateSession() {
             </div>
           ))}
         </div>
-          <Input type="text" placeholder="Enter title" onChange={(e) => {
-            setTitle(e.target.value);
-          }}/>
+
+        <Input
+          type="text"
+          placeholder="Enter title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
         <DialogFooter>
           <Button onClick={handleCreateSession}>Create Session</Button>
         </DialogFooter>

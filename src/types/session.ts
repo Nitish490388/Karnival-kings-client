@@ -14,3 +14,15 @@ export type ExpenseSession = {
   settles: boolean;
   players: Player[];
 };
+
+
+export interface Contribution {
+  id: string;
+  amount: number;
+  status: "PENDING" | "PAID";
+  type: string;
+  session: {
+    title: string;
+  };
+  playerId: string;
+}

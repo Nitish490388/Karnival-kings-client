@@ -6,7 +6,8 @@ import { useGetAllSessions } from "@/hook/useGetAllSessions";
 import CreateSession from "@/components/CreateSession";
 
 const AddExpenseMD = () => {
-  const sessions = useGetAllSessions();
+  const {data, refetch} = useGetAllSessions();
+  const sessions = data;
 
   return (
     <>
@@ -27,7 +28,7 @@ const AddExpenseMD = () => {
           </p>
           {/* <AddExpenseMDDialog/> */}
 
-          <CreateSession />
+          <CreateSession onCreated={refetch}/>
         </CardContent>
       </Card>
 

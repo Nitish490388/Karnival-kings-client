@@ -17,11 +17,15 @@ import { useCashSocketListener } from "./hook/useCashSocketListener.ts";
 import SessionDetails from "./pages/SessionDetails.tsx";
 import AdminPanel from "./pages/adminPanel.tsx";
 import ProfilePage from "./pages/profilePage.tsx";
+import Checklist from "./components/checkList.tsx";
+import { Toaster } from "./components/ui/sonner.tsx";
 
 function App() {
   useCashSocketListener();
   return (
     <>
+    <Toaster />
+    
       <Routes>
         <Route element={<HomeLayout />}>
           <Route path="/" element={<Home />} />
@@ -35,6 +39,7 @@ function App() {
             <Route element={<CashflowLayout />}>
               <Route path="/cashflow" element={<Chashflow />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/checklist" element={<Checklist />} />
               <Route
                 path="/cashflow/equip/add-expense"
                 element={<AddExpenseEQ />}
