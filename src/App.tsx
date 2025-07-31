@@ -19,13 +19,13 @@ import AdminPanel from "./pages/adminPanel.tsx";
 import ProfilePage from "./pages/profilePage.tsx";
 import Checklist from "./components/checkList.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
+import MemberOnly from "./components/memberOnly.tsx";
 
 function App() {
   useCashSocketListener();
   return (
     <>
-    <Toaster />
-    
+      <Toaster />
       <Routes>
         <Route element={<HomeLayout />}>
           <Route path="/" element={<Home />} />
@@ -33,37 +33,39 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/gallery" element={<Gallery />} />
           {/* <Route path="/ws" element={<WsPage />} /> */}
-
           <Route element={<RestrictUser />}>
-            <Route path="/admin-panel" element={<AdminPanel />} />
-            <Route element={<CashflowLayout />}>
-              <Route path="/cashflow" element={<Chashflow />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/checklist" element={<Checklist />} />
-              <Route
-                path="/cashflow/equip/add-expense"
-                element={<AddExpenseEQ />}
-              />
-              <Route element={<ViewdataLayout />}>
-                <Route
-                  path="/cashflow/equip/view-data"
-                  element={<ViewdataEQ />}
-                />
-                <Route
-                  path="/cashflow/matchday/view-data"
-                  element={<ViewdataMD />}
-                />
-              </Route>
-              <Route
-                path="/cashflow/matchday/add-expense"
-                element={<AddExpenseMD />}
-              />
-              <Route
-                path="/cashflow/matchday/add-contribution"
-                element={<AddContribution />}
-              />
+            <Route path="/profile" element={<ProfilePage />} />
+              <Route element={<CashflowLayout />}>
+              <Route element={<MemberOnly />}>
+              <Route path="/admin-panel" element={<AdminPanel />} />
+                <Route path="/cashflow" element={<Chashflow />} />
 
-              <Route path="/session/:id" element={<SessionDetails />} />
+                <Route path="/checklist" element={<Checklist />} />
+                <Route
+                  path="/cashflow/equip/add-expense"
+                  element={<AddExpenseEQ />}
+                />
+                <Route element={<ViewdataLayout />}>
+                  <Route
+                    path="/cashflow/equip/view-data"
+                    element={<ViewdataEQ />}
+                  />
+                  <Route
+                    path="/cashflow/matchday/view-data"
+                    element={<ViewdataMD />}
+                  />
+                </Route>
+                <Route
+                  path="/cashflow/matchday/add-expense"
+                  element={<AddExpenseMD />}
+                />
+                <Route
+                  path="/cashflow/matchday/add-contribution"
+                  element={<AddContribution />}
+                />
+
+                <Route path="/session/:id" element={<SessionDetails />} />
+              </Route>
             </Route>
           </Route>
         </Route>

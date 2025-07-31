@@ -1,10 +1,9 @@
 // components/gallery/GalleryView.tsx
 import { useEffect, useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import axiosClient from "@/utils/axiosClient";
-import { GalleryPost, GalleryMedia } from "@/types/gallery";
+import { GalleryPost } from "@/types/gallery";
 import GallerySlider from "@/components/GallerySlider";
 
 export default function Gallery() {

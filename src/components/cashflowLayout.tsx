@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 const CashflowLayout = () => {
   const fetchUser = useFetchProfile();
+  
 
   useEffect(() => {
     fetchUser();

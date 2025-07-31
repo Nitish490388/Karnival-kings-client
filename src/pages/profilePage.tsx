@@ -19,6 +19,7 @@ export default function ProfilePage() {
   const handleLogout = async () => {
     console.log("Logging out...");
     await axiosClient.post("/api/v1/player/logout");
+    
      resetProfile();
     navigate("/auth");
   };

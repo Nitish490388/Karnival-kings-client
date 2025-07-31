@@ -1,44 +1,3 @@
-export type Player = {
-  id: string;
-  name: string;
-  profilePic?: string | null;
-};
-
-export type Expense = {
-  id: string;
-  amount: number;
-  description: string;
-  date: string;
-  playerId: string;
-  paidBy: Player;
-};
-
-export type Contribution = {
-  id: string;
-  amount: number;
-  type: "MATCHDAY" | "EQUIPMENT";
-  player: Player;
-  playerId: string;
-  status: "PENDING" | "PAID" | "DECLINED";
-  date: string; // or Date if parsing into Date object
-  session: {
-    id: string;
-    title: string;
-  };
-  sessionId: string;
-};
-
-export type ExpenseSession = {
-  id: string;
-  title: string;
-  type: "MATCHDAY" | "EQUIPMENT";
-  settles: boolean;
-  players: Player[];
-  expenses: Expense[];
-  contributions: Contribution[];
-  createdAt: Date;
-};
-
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "@/utils/axiosClient";
@@ -48,6 +7,8 @@ import ContributionList from "@/components/ContributionList";
 import ExpenseList from "@/components/ExpenseList";
 import { Button } from "@/components/ui/button";
 import { generatePDFReport } from "@/utils/pdfGeneration";
+import { RefundList } from "@/components/RefundList";
+import { ExpenseSession } from "@/types/session";
 
 const SessionDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -106,6 +67,16 @@ const SessionDetails = () => {
         markAsPaid={async (id, playerId) => {
           await axiosClient.patch(`/api/v1/contributions/mark-paid`, {
             contributionId: id,
+            playerId,
+          });
+        }}
+      />
+
+      <RefundList
+        refunds={session.refunds}
+        markAsApproved={async (refundId, playerId) => {
+          await axiosClient.patch(`/api/v1/refunds/mark-approved`, {
+            refundId,
             playerId,
           });
         }}

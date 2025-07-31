@@ -11,6 +11,9 @@ export const useFetchProfile = () => {
       const res = await axiosClient.get("/api/v1/app/profile");
       if (res.data.statusCode === 201) {
         setProfile(res.data.result.player);
+        // console.log(res);
+        
+        
       } else { 
         setProfile(null);
       }

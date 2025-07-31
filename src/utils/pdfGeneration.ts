@@ -1,46 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { ExpenseSession } from "@/types/session";
 
-export type Player = {
-  id: string;
-  name: string;
-  profilePic?: string | null;
-};
-
-export type Expense = {
-  id: string;
-  amount: number;
-  description: string;
-  date: string;
-  playerId: string;
-  paidBy: Player;
-};
-
-export type Contribution = {
-  id: string;
-  amount: number;
-  type: "MATCHDAY" | "EQUIPMENT";
-  player: Player;
-  playerId: string;
-  status: "PENDING" | "PAID" | "DECLINED";
-  date: string;
-  session: {
-    id: string;
-    title: string;
-  };
-  sessionId: string;
-};
-
-export type ExpenseSession = {
-  id: string;
-  title: string;
-  type: "MATCHDAY" | "EQUIPMENT";
-  settles: boolean;
-  players: Player[];
-  expenses: Expense[];
-  contributions: Contribution[];
-  createdAt: Date;
-};
 
 export const generatePDFReport = (session: ExpenseSession | null): void => {
   if (!session) {
@@ -117,6 +78,42 @@ export const generatePDFReport = (session: ExpenseSession | null): void => {
     theme: "striped",
     headStyles: { fillColor: [76, 175, 80] },
   });
+
+  startY = (doc as any).lastAutoTable?.finalY ?? startY;
+  startY += 10;
+
+  // Section Heading for Refunds
+  doc.setFontSize(14);
+  doc.text("All Refunds", 14, startY);
+
+  startY += 6;
+
+  // Refunds Table
+ startY = (doc as any).lastAutoTable?.finalY ?? startY;
+startY += 10;
+
+// Section Heading for Refunds
+doc.setFontSize(14);
+doc.text("All Refunds", 14, startY);
+
+startY += 6;
+
+autoTable(doc, {
+  head: [["Player", "Amount", "Type", "Status", "Date"]],
+  body: session.refunds && session.refunds.length > 0
+    ? session.refunds.map((r) => [
+        r.player?.name ?? "Unknown",
+        `₹${r.amount}`,
+        r.type,
+        r.status,
+        new Date(r.date).toLocaleDateString(),
+      ])
+    : [["No refunds recorded", "", "", "", ""]],
+  startY,
+  theme: "striped",
+  headStyles: { fillColor: [255, 87, 34] }, // Orange color for refund table
+});
+
 
   // Save the PDF
   doc.save(`${session.title || "session"}_report.pdf`);

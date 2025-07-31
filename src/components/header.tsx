@@ -17,7 +17,7 @@ const Header: React.FC = () => {
   const user: Player | null = useRecoilValue(userAtom);
 
   if (profileLoadable.state !== "hasValue") {
-    return <div>loading...</div>;
+    return null;
   }
 
   // const user: Player = profileLoadable.contents;
