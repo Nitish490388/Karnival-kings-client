@@ -6,8 +6,6 @@ import { Lock } from "lucide-react";
 
 const MemberOnly = () => {
   const user: Player | null = useRecoilValue(userAtom);
-  console.log(user);
-  
 
   if (user?.isApproved !== true) {
     return (

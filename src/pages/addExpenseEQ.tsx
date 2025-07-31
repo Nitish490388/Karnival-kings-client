@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart } from "lucide-react";
 // import { Button } from "@/components/ui/button";
-import { AddExpenseEQDialog } from "@/components/addExpenseEQDialog";
+// import { AddExpenseEQDialog } from "@/components/addExpenseEQDialog";
 
 const AddExpenseEQ = () => {
   return (
@@ -22,7 +22,7 @@ const AddExpenseEQ = () => {
             One ball torn in 10 overs, and now it’s time to account for it. Log
             that equipment expense and keep the budget scoreboard updated!
           </p>
-          <AddExpenseEQDialog/>
+          {/* <AddExpenseEQDialog/> */}
         </CardContent>
       </Card>
     </div>

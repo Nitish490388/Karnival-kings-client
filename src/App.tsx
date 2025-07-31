@@ -9,7 +9,7 @@ import AddExpenseEQ from "./pages/addExpenseEQ";
 import AddExpenseMD from "./pages/addExpenseMD";
 import ViewdataEQ from "./pages/viewdataEQ";
 import RestrictUser from "./components/RestrictUser";
-import { ViewdataLayout } from "./components/ViewdataLayout";
+import ViewdataLayout  from "./components/ViewdataLayout";
 import ViewdataMD from "./pages/viewDataMD";
 import Chashflow from "./pages/cashflow";
 import AddContribution from "./pages/addContribution";

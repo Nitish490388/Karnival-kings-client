@@ -23,7 +23,7 @@ export default function Gallery() {
       try {
         const response = await axiosClient.get("/api/v1/gallery");
         setPosts(response.data.result.posts);
-        console.log(response.data.result.posts);
+        // console.log(response.data.result.posts);
       } catch (err) {
         console.error("Failed to fetch gallery", err);
       }

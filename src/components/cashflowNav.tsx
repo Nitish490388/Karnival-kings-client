@@ -65,13 +65,13 @@ export function CashflowNav() {
                     </Link>
                   </NavigationMenuLink>
                 </li>
-                <ListItem to="/cashflow/equip/view-data" title="View Data">
+                {/* <ListItem to="/cashflow/equip/view-data" title="View Data">
                   View all expenses and collected amount data from team players.
                 </ListItem>
                 <ListItem to="/cashflow/eqip/chcklist" title="Checklist">
                   Check if there is anything you have to pay or you will get
                   refunded.
-                </ListItem>
+                </ListItem> */}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
