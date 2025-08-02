@@ -2,19 +2,24 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { useRecoilValue } from "recoil";
 import { fromDateAtom, toDateAtom } from "@/state/dateRangeAtom";
 import axiosClient from "@/utils/axiosClient";
 
-// import { useRecoilValue } from 'recoil';
-// import {availableFundAtom} from "@/state/availableFundAtom";
+type Session = {
+  id: string;
+  title: string;
+  createdAt: string;
+  contributions: any[];
+  expenses: any[];
+  availableFund: number;
+};
 
 type EquipmentData = {
   availableFund: number;
-  contributions: any[];
-  expenses: any[];
+  sessions: Session[];
 };
 
 export default function ViewdataMD() {
@@ -24,6 +29,7 @@ export default function ViewdataMD() {
   const [searchParams, setSearchParams] = useSearchParams();
   const fromDate = useRecoilValue(fromDateAtom);
   const toDate = useRecoilValue(toDateAtom);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +40,6 @@ export default function ViewdataMD() {
             toDate,
           },
         });
-        console.log(response);
         const json = response.data;
         if (json.statusCode === 201) {
           setData(json.result);
@@ -42,7 +47,7 @@ export default function ViewdataMD() {
           throw new Error("Failed to fetch data");
         }
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message || "Something went wrong");
       } finally {
         setLoading(false);
       }
@@ -87,97 +92,33 @@ export default function ViewdataMD() {
     );
   }
 
-  const fallbackAvatar =
-    "https://ui-avatars.com/api/?name=Unknown&background=ddd&color=555";
-
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle>Available Fund</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p
-            className={`text-2xl font-bold ${
-              (data?.availableFund ?? 0) < 0 ? "text-red-600" : "text-green-600"
-            }`}
+      <h1 className="text-2xl font-bold">Matchday Sessions</h1>
+
+      {data?.sessions.length === 0 ? (
+        <p className="text-gray-500">No sessions found for the selected date range.</p>
+      ) : (
+        data?.sessions.map((session) => (
+          <Card
+            key={session.id}
+            className="cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => navigate(`/session/${session.id}`)}
           >
-            ₹ {data?.availableFund ?? 0}
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Contributions</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {data?.contributions?.length ? (
-            data.contributions.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-4 border rounded-md shadow-sm"
-              >
-                <img
-                  src={item.player?.profilePic || fallbackAvatar}
-                  alt={item.player?.name || "User"}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm sm:text-base font-medium truncate">
-                    {item.player?.name || "Unknown"}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground truncate">
-                    {new Date(item.date).toLocaleString()}
-                  </p>
-                </div>
-                <div className="text-sm sm:text-base font-semibold text-green-600 whitespace-nowrap">
-                  ₹ {item.amount}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              No contributions found.
-            </p>
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Expenses</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {data?.expenses?.length ? (
-            data.expenses.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-4 border rounded-md shadow-sm"
-              >
-                <img
-                  src={item.player?.profilePic || fallbackAvatar}
-                  alt={item.player?.name || "User"}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm sm:text-base font-medium truncate">
-                    {item.player?.name || "Unknown"}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground truncate">
-                    {new Date(item.date).toLocaleString()}
-                  </p>
-                </div>
-                <div className="text-sm sm:text-base font-semibold text-red-600 whitespace-nowrap">
-                  ₹ {item.amount}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-muted-foreground">No expenses found.</p>
-          )}
-        </CardContent>
-      </Card>
+            <CardHeader>
+              <CardTitle className="text-xl">{session.title}</CardTitle>
+              <p className="text-sm text-gray-500">
+                Created on {format(new Date(session.createdAt), "dd MMM yyyy")}
+              </p>
+            </CardHeader>
+            <CardContent className="text-sm text-gray-700 space-y-1">
+              <p>🪙 Available Fund: ₹{session.availableFund}</p>
+              <p>👥 Contributions: {session.contributions.length}</p>
+              <p>💸 Expenses: {session.expenses.length}</p>
+            </CardContent>
+          </Card>
+        ))
+      )}
     </div>
   );
 }
