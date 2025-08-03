@@ -58,7 +58,7 @@ export default function Auth() {
 
   const handleGoogleLogin = () => {
     console.log("Google login triggered");
-    window.location.href = "http://localhost:8000/auth/google"
+    window.location.href = "https://karnival-kings-server.onrender.com/auth/google"
   };
 
   return (
