@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const WsPage = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages] = useState<string[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [input, setInput] = useState<string>("");
 

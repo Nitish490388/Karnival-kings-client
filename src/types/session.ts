@@ -16,6 +16,7 @@ export type Refund = {
   status: "PENDING" | "PAID" | "DECLINED"; // Status enum
   date: string;
   sessionId: string;
+  session: ExpenseSession
 };
 
 

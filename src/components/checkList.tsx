@@ -5,14 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import axiosClient from "@/utils/axiosClient";
-import { Refunds } from "@/types/session";
-import { Contribution } from "@/types/session";
+import { Contribution, Refund } from "@/types/session";
 
 export default function Checklist() {
   
   const [transactions, setTransactions] = useState<Contribution[]>([]);
 
-  const [refunds, setRefunds] = useState<Refunds[]>([]);
+  const [refunds, setRefunds] = useState<Refund[]>([]);
 
   const [loading, setLoading] = useState(true);
 

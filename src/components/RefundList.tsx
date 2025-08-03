@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Refunds } from "@/types/session";
+import { Refund } from "@/types/session";
 import { Button } from "@/components/ui/button";
 
 interface RefundListProps {
-  refunds: Refunds[];
+  refunds: Refund[];
   markAsApproved: (refundId: string, playerId: string) => Promise<void>;
 }
 
 export const RefundList = ({ refunds: initialRefunds, markAsApproved }: RefundListProps) => {
-  const [refunds, setRefunds] = useState<Refunds[]>(initialRefunds);
+  const [refunds, setRefunds] = useState<Refund[]>(initialRefunds);
 
   const handleApprove = async (refundId: string, playerId: string) => {
     try {

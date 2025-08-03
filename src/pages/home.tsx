@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
-  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6">
       {/* <header className="flex flex-col sm:flex-row justify-between items-center py-6 gap-4">
