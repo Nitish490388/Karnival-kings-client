@@ -2,7 +2,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: "https://karnival-kings-server.onrender.com",
 });
 
 // axiosClient.interceptors.request.use((config) => {

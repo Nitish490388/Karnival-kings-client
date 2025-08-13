@@ -7,7 +7,7 @@ export const useCashSocketListener = () => {
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000");
+    const ws = new WebSocket("wss://karnival-kings-server.onrender.com");
     socketRef.current = ws;
 
     ws.onopen = () => console.log("✅ WebSocket connected");

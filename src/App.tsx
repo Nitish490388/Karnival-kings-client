@@ -18,7 +18,7 @@ const AddExpenseMD = lazy(() => import("./pages/addExpenseMD"));
 const ViewdataEQ = lazy(() => import("./pages/viewdataEQ"));
 const ViewdataMD = lazy(() => import("./pages/viewDataMD"));
 const ViewdataLayout = lazy(() => import("./components/ViewdataLayout"));
-const Chashflow = lazy(() => import("./pages/cashflow"));
+const CashFlowPage = lazy(() => import("./pages/cashflow"));
 const AddContribution = lazy(() => import("./pages/addContribution"));
 const SessionDetails = lazy(() => import("./pages/SessionDetails"));
 const AdminPanel = lazy(() => import("./pages/adminPanel"));
@@ -45,7 +45,7 @@ function App() {
               <Route element={<CashflowLayout />}>
                 <Route element={<MemberOnly />}>
                   <Route path="/admin-panel" element={<AdminPanel />} />
-                  <Route path="/cashflow" element={<Chashflow />} />
+                  <Route path="/cashflow" element={<CashFlowPage />} />
                   <Route path="/checklist" element={<Checklist />} />
                   <Route
                     path="/cashflow/equip/add-expense"
