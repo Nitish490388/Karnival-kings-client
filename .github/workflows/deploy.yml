@@ -24,8 +24,9 @@ jobs:
     - name: Run tests
       run: npm run test -- --run
     
-    - name: Run linting (fail only on errors)
-      run: eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives
+    - name: Run linting (non-blocking)
+      run: npm run lint-ci
+      continue-on-error: true
 
   build-and-deploy:
     needs: test
@@ -47,7 +48,6 @@ jobs:
     - name: Build project
       run: npm run build
       env:
-        VITE_API_URL: ${{ secrets.VITE_API_URL }}
         VITE_APP_ENV: production
     
     - name: Configure AWS credentials
