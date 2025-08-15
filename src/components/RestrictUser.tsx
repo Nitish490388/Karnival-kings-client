@@ -14,6 +14,8 @@ const RestrictUser = () => {
         };
       
         const token = getCookie('token');
+        console.log(token);
+        
 
         if (!token) {
             navigate("/auth");
