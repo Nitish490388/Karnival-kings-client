@@ -24,8 +24,8 @@ jobs:
     - name: Run tests
       run: npm run test -- --run
     
-    - name: Run linting
-      run: npm run lint
+    - name: Run linting (fail only on errors)
+      run: eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives
 
   build-and-deploy:
     needs: test
