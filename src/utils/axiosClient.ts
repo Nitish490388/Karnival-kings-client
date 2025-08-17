@@ -3,7 +3,13 @@ axios.defaults.withCredentials = true;
 
 const axiosClient = axios.create({
   baseURL: "https://karnival-kings-server.onrender.com",
+  withCredentials: true
 });
+
+
+
+export default axiosClient;
+
 
 // axiosClient.interceptors.request.use((config) => {
 //   return config;
@@ -17,5 +23,3 @@ const axiosClient = axios.create({
 //     return Promise.reject(error.response);
 //   }
 // );
-
-export default axiosClient;
