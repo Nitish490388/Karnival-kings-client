@@ -32,6 +32,8 @@ export default function Auth() {
     }
     const response = await axios.post("/api/v1/player/signup", formdata);    
     const statusCode = response.data.statusCode;
+    console.log(response.data);
+    
     if(statusCode==201) {
       setErrorMSG(response?.data?.message);
     } else {

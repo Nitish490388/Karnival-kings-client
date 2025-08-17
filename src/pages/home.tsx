@@ -2,17 +2,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
-import { getCookie } from "@/utils/getCookie";
-
 export default function LandingPage() {
-  useEffect(()=> {
-    const cookie = getCookie("token");
-    console.log("From kanding page cookie", cookie);
-    
-  }, []);
+  
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6">
+  <div className="min-h-screen bg-background p-4 sm:p-6">
       {/* <header className="flex flex-col sm:flex-row justify-between items-center py-6 gap-4">
         <h1 className="text-2xl sm:text-3xl font-bold text-primary"></h1>
         <Button>Get Started</Button>

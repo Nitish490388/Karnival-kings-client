@@ -13,7 +13,7 @@ const RestrictUser = () => {
           return null;
         };
       
-        const token = getCookie('token');
+        const token = "token is nitish"
         console.log(token);
         
 
