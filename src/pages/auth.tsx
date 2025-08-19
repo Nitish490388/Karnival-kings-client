@@ -11,6 +11,7 @@ import {
 } from "@/types/types";
 import axios from "@/utils/axiosClient";
 import { useNavigate } from "react-router-dom";
+import { setItem } from "@/utils/localStorageManager";
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -32,12 +33,13 @@ export default function Auth() {
     }
     const response = await axios.post("/api/v1/player/signup", formdata);    
     const statusCode = response.data.statusCode;
-    console.log(response.data);
+    
     
     if(statusCode==201) {
       setErrorMSG(response?.data?.message);
     } else {
-      navigate("/cashflow/eqip/view-data");
+      setItem(response.data.result.token);
+      navigate("/cashflow");
     }
     
   };
@@ -49,11 +51,14 @@ export default function Auth() {
     }
     const response = await axios.post("/api/v1/player/signin", form);
     const statusCode = response.data.statusCode;
+    // console.log(response.data.result.token);
+    setItem(response.data.result.token);
 
     if(statusCode!==201) {
       setErrorMSG(response?.data?.message);
     } else {
-      navigate("/cashflow/eqip/view-data");
+      setItem(response.data.result.token);
+      navigate("/cashflow");
     }
     
   };

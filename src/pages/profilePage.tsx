@@ -2,11 +2,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import axiosClient from "@/utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { Player } from "@/types/session";
 import { userAtom } from "@/state/userAtom";
+import { removeItem } from "@/utils/localStorageManager";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -18,9 +18,9 @@ export default function ProfilePage() {
   
   const handleLogout = async () => {
     console.log("Logging out...");
-    await axiosClient.post("/api/v1/player/logout");
-    
-     resetProfile();
+    // await axiosClient.post("/api/v1/player/logout");
+    removeItem();
+    resetProfile();
     navigate("/auth");
   };
 

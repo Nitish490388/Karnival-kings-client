@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
 import { useCashSocketListener } from "./hook/useCashSocketListener";
+import SetToken from "./pages/setToken";
 
 const Loader = () => <div className="p-8 text-center text-lg font-semibold">⏳ Loading...</div>;
 
@@ -40,6 +41,7 @@ function App() {
             <Route path="/auth" element={<Auth />} />
             <Route path="/team" element={<Team />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/setToken" element={<SetToken />} />
             <Route element={<RestrictUser />}>
               <Route path="/profile" element={<ProfilePage />} />
               <Route element={<CashflowLayout />}>
